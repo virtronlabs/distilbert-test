@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BERT Embedding Generator</title>
+</head>
+<body>
+    <h1>BERT Embedding Generator</h1>
+    <form id="textForm">
+        <label for="text">Enter text:</label>
+        <input type="text" id="text" name="text" required>
+        <button type="submit">Generate Embedding</button>
+    </form>
+
+    <h2>Embedding:</h2>
+    <pre id="embeddingOutput"></pre>
+
+    <script>
+        document.getElementById('textForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const text = document.getElementById('text').value;
+
+            const response = await fetch('/get_embedding', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `text=${text}`
+            });
+
+            const result = await response.json();
+            document.getElementById('embeddingOutput').textContent = JSON.stringify(result.embedding, null, 2);
+        });
+    </script>
+</body>
+</html>
